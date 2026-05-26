@@ -1,0 +1,33 @@
+{
+  "name": "_salus",
+  "version": "1.0.0",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/dbmatz/_salus.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/dbmatz/_salus/issues"
+  },
+  "homepage": "https://github.com/dbmatz/_salus#readme",
+  "description": "",
+  "devDependencies": {
+    "@types/node": "^25.9.1",
+    "typescript": "^6.0.3"
+  },
+  "dependencies": {
+    "@fastify/jwt": "^10.1.0",
+    "@prisma/client": "^7.8.0",
+    "argon2": "^0.44.0",
+    "fastify": "^5.8.5",
+    "jose": "^6.2.3",
+    "prisma": "^7.8.0",
+    "zod": "^4.4.3"
+  }
+}
