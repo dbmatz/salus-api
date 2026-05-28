@@ -20,6 +20,9 @@
     "declaration": true,
     "declarationMap": true,
     "sourceMap": true,
+    "types": [
+      "node"
+    ],
     "paths": {
       "@domain/*": [
         "./src/domain/*"
@@ -28,7 +31,7 @@
         "./src/application/*"
       ],
       "@infra/*": [
-        "./src/infrastructure/*"
+        "./src/infra/*"
       ],
       "@http/*": [
         "./src/http/*"

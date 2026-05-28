@@ -1,0 +1,118 @@
+datasource db {
+  provider = "postgresql"
+}
+
+generator client {
+  provider        = "prisma-client-js"
+}
+
+enum ParameterType {
+  BOOLEAN
+  SCALE_1_5
+  SCALE_1_10
+}
+
+enum MedicationStatus {
+  TAKEN
+  NOT_TAKEN
+  SKIPPED
+}
+
+model User {
+  id           String    @id @default(uuid())
+  email        String    @unique
+  name         String
+  passwordHash String    @map("password_hash")
+  createdAt    DateTime  @default(now()) @map("created_at")
+  updatedAt    DateTime  @updatedAt @map("updated_at")
+  deletedAt    DateTime? @map("deleted_at")
+
+  parameters   Parameter[]
+  dailyRecords DailyRecord[]
+  emotions     Emotion[]
+  medications  Medication[]
+
+  @@map("users")
+}
+
+model Emotion {
+  id           String        @id @default(uuid())
+  name         String
+  deletedAt    DateTime?     @map("deleted_at")
+  userId       String        @map("user_id")
+  dailyRecords DailyRecord[]
+
+  user User @relation(fields: [userId], references: [id])
+
+  @@unique([userId, name])
+  @@map("emotions")
+}
+
+model Parameter {
+  id        String        @id @default(uuid())
+  name      String
+  type      ParameterType @default(BOOLEAN)
+  deletedAt DateTime?     @map("deleted_at")
+  userId    String        @map("user_id")
+
+  user                 User                  @relation(fields: [userId], references: [id])
+  parameterEvaluations ParameterEvaluation[]
+
+  @@map("parameters")
+}
+
+model ParameterEvaluation {
+  id            String   @id @default(uuid())
+  dailyRecordId String   @map("daily_record_id")
+  parameterId   String   @map("parameter_id")
+  valuationBool Boolean? @map("valuation_bool")
+  valuationInt  Int?     @map("valuation_int")
+
+  dailyRecord DailyRecord @relation(fields: [dailyRecordId], references: [id])
+  parameter   Parameter   @relation(fields: [parameterId], references: [id])
+
+  @@map("parameter_evaluations")
+}
+
+model Medication {
+  id        String    @id @default(uuid())
+  userId    String    @map("user_id")
+  name      String
+  dosage    String?
+  deletedAt DateTime? @map("deleted_at")
+
+  user           User            @relation(fields: [userId], references: [id])
+  medicationLogs MedicationLog[]
+
+  @@map("medications")
+}
+
+model MedicationLog {
+  id            String           @id @default(uuid())
+  status        MedicationStatus @default(NOT_TAKEN)
+  medicationId  String           @map("medication_id")
+  dailyRecordId String           @map("daily_record_id")
+
+  medication  Medication  @relation(fields: [medicationId], references: [id])
+  dailyRecord DailyRecord @relation(fields: [dailyRecordId], references: [id])
+
+  @@map("medication_logs")
+}
+
+model DailyRecord {
+  id             String   @id @default(uuid())
+  date           DateTime @db.Date
+  dayDescription String?  @map("day_description") @db.Text
+  emotionId      String   @map("emotion_id")
+  userId         String   @map("user_id")
+  createdAt      DateTime @default(now()) @map("created_at")
+  updatedAt      DateTime @updatedAt @map("updated_at")
+
+  user                 User                  @relation(fields: [userId], references: [id])
+  emotion              Emotion               @relation(fields: [emotionId], references: [id])
+  medicationLogs       MedicationLog[]
+  parameterEvaluations ParameterEvaluation[]
+
+  @@unique([userId, date])
+  @@map("daily_records")
+}
