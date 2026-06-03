@@ -34,8 +34,18 @@ export class User {
   static create(
     props: Omit<UserProps, "id" | "createdAt" | "updatedAt" | "deletedAt">,
   ): User {
-    if (!props.name || props.name.trim().length < 2) {
-      throw new DomainError("Nome deve ter ao menos 2 caracteres.");
+    const nameParts = props.name.trim().split(/\s+/);
+
+    if (nameParts.length < 2) {
+      throw new DomainError(
+        "Name must contain at least a first name and a last name.",
+      );
+    }
+
+    if (nameParts.some((part) => part.length < 2)) {
+      throw new DomainError(
+        "Name and last name must be at least 2 characters each.",
+      );
     }
     return new User(props);
   }
@@ -72,8 +82,16 @@ export class User {
   }
 
   updateName(name: string): void {
-    if (!name || name.trim().length < 2) {
-      throw new DomainError("Nome deve ter ao menos 2 caracteres.");
+    const nameParts = name.trim().split(/\s+/);
+
+    if (nameParts.length < 2) {
+      throw new DomainError("Nome deve conter nome e sobrenome.");
+    }
+
+    if (nameParts.some((part) => part.length < 2)) {
+      throw new DomainError(
+        "Nome e sobrenome devem ter ao menos 2 caracteres cada.",
+      );
     }
     this._name = name.trim();
     this._updatedAt = new Date();
@@ -86,7 +104,7 @@ export class User {
 
   delete(): void {
     if (this.isDeleted) {
-      throw new DomainError("Usuário já foi removido.");
+      throw new DomainError("User already deleted.");
     }
     this._deletedAt = new Date();
     this._updatedAt = new Date();
