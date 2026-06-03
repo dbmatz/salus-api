@@ -1,10 +1,12 @@
-import "dotenv/config";
 import Fastify from "fastify";
 import { env } from "./env";
+import { authController } from "@infra/http/controllers/auth.controller";
 
 const app = Fastify({
   logger: env.NODE_ENV === "development",
 });
+
+app.register(authController);
 
 const start = async () => {
   try {
