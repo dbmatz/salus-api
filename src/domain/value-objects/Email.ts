@@ -1,7 +1,7 @@
 import { DomainError } from "@domain/errors/DomainError";
 
 export class Email {
-  private value;
+  readonly value: string;
 
   private constructor(email: string) {
     this.value = email.toLowerCase().trim();
