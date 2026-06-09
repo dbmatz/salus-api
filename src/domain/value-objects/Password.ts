@@ -8,9 +8,9 @@ export class Password {
   }
 
   static create(value: string): Password {
-    if (!value || value.trim().length < 6) {
+    if (!value || value.length < 8) {
       throw new DomainError(
-        `Invalid password. Password must be at least 6 characters long.`,
+        `Invalid password. Password must be at least 8 characters long.`,
       );
     }
 
