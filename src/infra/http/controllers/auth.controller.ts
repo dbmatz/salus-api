@@ -12,27 +12,8 @@ const registerBodySchema = z.object({
 
 export async function authController(app: FastifyInstance) {
   app.post("/auth/register", async (request, reply) => {
-    try {
-      const body = registerBodySchema.parse(request.body);
-      await registerUserUseCase.execute(body);
-      return reply.status(201).send();
-    } catch (error) {
-      if (error instanceof ZodError) {
-        return reply.status(400).send({
-          message: "Validation failed",
-          errors: error.issues.map((e) => ({
-            field: e.path.join("."),
-            message: e.message,
-          })),
-        });
-      }
-      if (error instanceof DomainError) {
-        return reply.status(400).send({ message: error.message });
-      }
-      if (error instanceof ConflictError) {
-        return reply.status(409).send({ message: error.message });
-      }
-      throw error;
-    }
+    const body = registerBodySchema.parse(request.body);
+    await registerUserUseCase.execute(body);
+    return reply.status(201).send();
   });
 }

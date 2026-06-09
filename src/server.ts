@@ -1,10 +1,13 @@
 import Fastify from "fastify";
 import { env } from "./env";
 import { authController } from "@infra/http/controllers/auth.controller";
+import { registerErrorHandler } from "@infra/errors/errorHandler";
 
 const app = Fastify({
   logger: env.NODE_ENV === "development",
 });
+
+registerErrorHandler(app);
 
 app.register(authController);
 
