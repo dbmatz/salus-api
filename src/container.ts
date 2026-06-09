@@ -8,7 +8,7 @@ const userRepository = new PrismaUserRepository(prisma);
 const hashingService = new ArgonHashingService();
 
 //--- USE CASES ---
-export const registerUserUseCase = new RegisterUserUseCase(
+export const registerUserUseCase = new RegisterUserUseCase({
   userRepository,
   hashingService,
-);
+});

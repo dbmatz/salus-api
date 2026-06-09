@@ -11,25 +11,29 @@ interface RegisterUserInput {
   password: string;
 }
 
-export class RegisterUserUseCase {
-  constructor(
-    private userRepository: IUserRepository,
-    private hashingService: IHashingService,
-  ) {}
+interface RegisterUserDeps {
+  userRepository: IUserRepository;
+  hashingService: IHashingService;
+}
 
-  async execute(input: RegisterUserInput) {
+export class RegisterUserUseCase {
+  constructor(private readonly deps: RegisterUserDeps) {}
+
+  async execute(input: RegisterUserInput): Promise<void> {
     const email = Email.create(input.email);
     const password = Password.create(input.password);
 
-    const existingEmail = await this.userRepository.findByEmail(email.value);
+    const existingEmail = await this.deps.userRepository.findByEmail(
+      email.value,
+    );
 
     if (existingEmail) {
       throw new ConflictError("Email already in use");
     }
 
-    const passwordHash = await this.hashingService.hash(password.value);
+    const passwordHash = await this.deps.hashingService.hash(password.value);
 
     const user = User.create({ name: input.name, email, passwordHash });
-    await this.userRepository.create(user);
+    await this.deps.userRepository.create(user);
   }
 }
