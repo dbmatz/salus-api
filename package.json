@@ -3,14 +3,17 @@
   "version": "1.0.0",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
     "prisma:generate": "prisma generate",
     "prisma:migrate": "prisma migrate dev",
     "prisma:migrate:prod": "prisma migrate deploy",
     "prisma:studio": "prisma studio",
     "postinstall": "prisma generate",
     "start": "node dist/server.js",
-    "dev": "tsx watch --env-file=.env src/server.ts"
+    "dev": "tsx watch --env-file=.env src/server.ts",
+    "test": "vitest",
+    "test:run": "vitest run",
+    "test:coverage": "vitest run --coverage",
+    "test:watch": "vitest watch"
   },
   "repository": {
     "type": "git",
@@ -26,9 +29,11 @@
   "description": "",
   "devDependencies": {
     "@types/node": "^25.9.1",
+    "@vitest/coverage-v8": "^4.1.8",
     "prisma": "^7.8.0",
     "tsx": "^4.22.3",
-    "typescript": "^6.0.3"
+    "typescript": "^6.0.3",
+    "vitest": "^4.1.8"
   },
   "dependencies": {
     "@prisma/adapter-pg": "^7.8.0",
