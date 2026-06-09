@@ -62,6 +62,10 @@ export class User {
     return new User(props);
   }
 
+  get id(): string {
+    return this._id;
+  }
+
   get name(): string {
     return this._name;
   }
@@ -75,7 +79,7 @@ export class User {
     return this._deletedAt;
   }
   get isDeleted(): boolean {
-    return this._deletedAt !== null;
+    return this._deletedAt !== undefined;
   }
   get passwordHash(): string {
     return this._passwordHash;
@@ -85,12 +89,14 @@ export class User {
     const nameParts = name.trim().split(/\s+/);
 
     if (nameParts.length < 2) {
-      throw new DomainError("Nome deve conter nome e sobrenome.");
+      throw new DomainError(
+        "Name must contain at least a first name and a last name.",
+      );
     }
 
     if (nameParts.some((part) => part.length < 2)) {
       throw new DomainError(
-        "Nome e sobrenome devem ter ao menos 2 caracteres cada.",
+        "Name and last name must be at least 2 characters each.",
       );
     }
     this._name = name.trim();
