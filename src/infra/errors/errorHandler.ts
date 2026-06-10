@@ -1,5 +1,6 @@
 import { ConflictError } from "@domain/errors/ConflictError";
 import { DomainError } from "@domain/errors/DomainError";
+import { UnauthorizedError } from "@domain/errors/UnauthorizedError";
 import { FastifyInstance } from "fastify";
 import { ZodError } from "zod";
 
@@ -17,6 +18,10 @@ export function registerErrorHandler(app: FastifyInstance): void {
 
     if (error instanceof ConflictError) {
       return reply.status(409).send({ message: error.message });
+    }
+
+    if (error instanceof UnauthorizedError) {
+      return reply.status(401).send({ message: error.message });
     }
 
     if (error instanceof DomainError) {
