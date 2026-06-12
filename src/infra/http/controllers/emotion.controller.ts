@@ -3,6 +3,7 @@ import { z } from "zod";
 import {
   authenticate,
   createEmotionUseCase,
+  deleteEmotionUseCase,
   listEmotionUseCase,
 } from "../../../container";
 
@@ -10,9 +11,13 @@ const createEmotionBodySchema = z.object({
   name: z.string().min(3),
 });
 
+const deleteEmotionParamsSchema = z.object({
+  emotionId: z.uuid(),
+});
+
 export async function emotionController(app: FastifyInstance) {
   app.post(
-    "/emotion/create",
+    "/emotions",
     { preHandler: authenticate },
     async (request, reply) => {
       const body = createEmotionBodySchema.parse(request.body);
@@ -21,7 +26,7 @@ export async function emotionController(app: FastifyInstance) {
     },
   );
 
-  app.get("/emotion", { preHandler: authenticate }, async (request, reply) => {
+  app.get("/emotions", { preHandler: authenticate }, async (request, reply) => {
     const result = await listEmotionUseCase.execute({ userId: request.userId });
     return reply.status(200).send({
       emotions: result.map((e) => ({
@@ -29,8 +34,18 @@ export async function emotionController(app: FastifyInstance) {
         name: e.name,
         createdAt: e.createdAt,
         deletedAt: e.deletedAt,
-        updatedAt: e.updatedAt
+        updatedAt: e.updatedAt,
       })),
     });
   });
+
+  app.delete(
+    "/emotions/:emotionId",
+    { preHandler: authenticate },
+    async (request, reply) => {
+      const { emotionId } = deleteEmotionParamsSchema.parse(request.params);
+      await deleteEmotionUseCase.execute({ emotionId, userId: request.userId });
+      return reply.status(204).send();
+    },
+  );
 }
