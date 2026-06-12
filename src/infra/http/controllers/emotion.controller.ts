@@ -5,6 +5,7 @@ import {
   createEmotionUseCase,
   deleteEmotionUseCase,
   listEmotionUseCase,
+  restoreEmotionUseCase,
 } from "../../../container";
 
 const createEmotionBodySchema = z.object({
@@ -12,6 +13,10 @@ const createEmotionBodySchema = z.object({
 });
 
 const deleteEmotionParamsSchema = z.object({
+  emotionId: z.uuid(),
+});
+
+const restoreEmotionParamsSchema = z.object({
   emotionId: z.uuid(),
 });
 
@@ -42,6 +47,19 @@ export async function emotionController(app: FastifyInstance) {
       const { emotionId } = deleteEmotionParamsSchema.parse(request.params);
       await deleteEmotionUseCase.execute({ emotionId, userId: request.userId });
       return reply.status(204).send();
+    },
+  );
+
+  app.patch(
+    "/:emotionId/restore",
+    { preHandler: authenticate },
+    async (request, reply) => {
+      const { emotionId } = restoreEmotionParamsSchema.parse(request.params);
+      await restoreEmotionUseCase.execute({
+        emotionId,
+        userId: request.userId,
+      });
+      return reply.status(200).send();
     },
   );
 }
