@@ -1,6 +1,7 @@
 import { FastifyReply, FastifyRequest } from "fastify";
 import { IJwtService } from "@domain/services/IJwtService";
 import { UnauthorizedError } from "@domain/errors/UnauthorizedError";
+import { JWTExpired } from "jose/errors";
 
 export function buildAuthMiddleware(jwtService: IJwtService) {
   return async function authenticate(
@@ -22,7 +23,10 @@ export function buildAuthMiddleware(jwtService: IJwtService) {
     try {
       const payload = await jwtService.verify(token);
       request.userId = payload.sub;
-    } catch {
+    } catch (error: unknown) {
+      if (error instanceof JWTExpired) {
+        throw new UnauthorizedError("Expired token.");
+      }
       throw new UnauthorizedError("Invalid or expired token.");
     }
   };
