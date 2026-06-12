@@ -14,13 +14,13 @@ const loginBodySchema = z.object({
 });
 
 export async function authController(app: FastifyInstance) {
-  app.post("/auth/register", async (request, reply) => {
+  app.post("/register", async (request, reply) => {
     const body = registerBodySchema.parse(request.body);
     await registerUserUseCase.execute(body);
     return reply.status(201).send();
   });
 
-  app.post("/auth/login", async (request, reply) => {
+  app.post("/login", async (request, reply) => {
     const body = loginBodySchema.parse(request.body);
     const result = await loginUseCase.execute(body);
     return reply.status(200).send(result);

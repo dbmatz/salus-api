@@ -10,8 +10,8 @@ const app = Fastify({
 
 registerErrorHandler(app);
 
-app.register(authController);
-app.register(emotionController);
+app.register(authController, { prefix: "/auth" });
+app.register(emotionController, { prefix: "/emotions" });
 
 const start = async () => {
   try {

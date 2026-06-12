@@ -16,17 +16,13 @@ const deleteEmotionParamsSchema = z.object({
 });
 
 export async function emotionController(app: FastifyInstance) {
-  app.post(
-    "/emotions",
-    { preHandler: authenticate },
-    async (request, reply) => {
-      const body = createEmotionBodySchema.parse(request.body);
-      await createEmotionUseCase.execute({ ...body, userId: request.userId });
-      return reply.status(201).send();
-    },
-  );
+  app.post("/", { preHandler: authenticate }, async (request, reply) => {
+    const body = createEmotionBodySchema.parse(request.body);
+    await createEmotionUseCase.execute({ ...body, userId: request.userId });
+    return reply.status(201).send();
+  });
 
-  app.get("/emotions", { preHandler: authenticate }, async (request, reply) => {
+  app.get("/", { preHandler: authenticate }, async (request, reply) => {
     const result = await listEmotionUseCase.execute({ userId: request.userId });
     return reply.status(200).send({
       emotions: result.map((e) => ({
@@ -40,7 +36,7 @@ export async function emotionController(app: FastifyInstance) {
   });
 
   app.delete(
-    "/emotions/:emotionId",
+    "/:emotionId",
     { preHandler: authenticate },
     async (request, reply) => {
       const { emotionId } = deleteEmotionParamsSchema.parse(request.params);
