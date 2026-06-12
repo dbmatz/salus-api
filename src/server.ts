@@ -2,6 +2,7 @@ import Fastify from "fastify";
 import { env } from "./env";
 import { authController } from "@infra/http/controllers/auth.controller";
 import { registerErrorHandler } from "@infra/errors/errorHandler";
+import { emotionController } from "@infra/http/controllers/emotion.controller";
 
 const app = Fastify({
   logger: env.NODE_ENV === "development",
@@ -10,6 +11,7 @@ const app = Fastify({
 registerErrorHandler(app);
 
 app.register(authController);
+app.register(emotionController);
 
 const start = async () => {
   try {
