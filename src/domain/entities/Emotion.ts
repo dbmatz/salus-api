@@ -84,4 +84,12 @@ export class Emotion {
     this._deletedAt = new Date();
     this._updatedAt = new Date();
   }
+
+  restore(): void {
+    if (!this.isDeleted) {
+      throw new DomainError("Emotion is not deleted.");
+    }
+    this._deletedAt = undefined;
+    this._updatedAt = new Date();
+  }
 }
