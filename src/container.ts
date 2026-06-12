@@ -1,6 +1,7 @@
 import { LoginUseCase } from "@app/use-cases/auth/Login.usecase";
 import { RegisterUserUseCase } from "@app/use-cases/auth/RegisterUser.usecase";
 import { CreateEmotionUseCase } from "@app/use-cases/emotion/CreateEmotion.usecase";
+import { ListEmotionUseCase } from "@app/use-cases/emotion/ListEmotion.usecase";
 import { prisma } from "@infra/database/prisma/client";
 import { PrismaEmotionRepository } from "@infra/database/repositories/PrismaEmotionRepository";
 import { PrismaUserRepository } from "@infra/database/repositories/PrismaUserRepository";
@@ -30,6 +31,11 @@ export const loginUseCase = new LoginUseCase({
 });
 
 export const createEmotionUseCase = new CreateEmotionUseCase({
+  emotionRepository,
+  userRepository,
+});
+
+export const listEmotionUseCase = new ListEmotionUseCase({
   emotionRepository,
   userRepository,
 });
