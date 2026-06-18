@@ -87,6 +87,7 @@ model Medication {
   user           User            @relation(fields: [userId], references: [id])
   medicationLogs MedicationLog[]
 
+  @@unique([userId, name, dosage])
   @@map("medications")
 }
 
