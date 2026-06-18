@@ -64,4 +64,19 @@ describe("Emotion", () => {
       expect(() => emotion.delete()).toThrow(DomainError);
     });
   });
+
+  describe("restore", () => {
+    it("must restore emotion", () => {
+      const emotion = Emotion.create(makeValidEmotionProps());
+      emotion.delete();
+      emotion.restore();
+      expect(emotion.isDeleted).toBe(false);
+      expect(emotion.deletedAt).toBeUndefined();
+    });
+
+    it("must throw DomainError when restoring an undeleted emotion", () => {
+      const emotion = Emotion.create(makeValidEmotionProps());
+      expect(() => emotion.restore()).toThrow(DomainError);
+    });
+  });
 });
