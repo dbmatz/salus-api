@@ -3,6 +3,7 @@ import { env } from "./env";
 import { authController } from "@infra/http/controllers/auth.controller";
 import { registerErrorHandler } from "@infra/errors/errorHandler";
 import { emotionController } from "@infra/http/controllers/emotion.controller";
+import { medicationController } from "@infra/http/controllers/medication.controller";
 
 const app = Fastify({
   logger: env.NODE_ENV === "development",
@@ -12,6 +13,7 @@ registerErrorHandler(app);
 
 app.register(authController, { prefix: "/auth" });
 app.register(emotionController, { prefix: "/emotions" });
+app.register(medicationController, { prefix: "/medication" });
 
 const start = async () => {
   try {

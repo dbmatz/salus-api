@@ -4,8 +4,10 @@ import { CreateEmotionUseCase } from "@app/use-cases/emotion/CreateEmotion.useca
 import { DeleteEmotionUseCase } from "@app/use-cases/emotion/DeleteEmotion.usecase";
 import { ListEmotionUseCase } from "@app/use-cases/emotion/ListEmotion.usecase";
 import { RestoreEmotionUseCase } from "@app/use-cases/emotion/RestoreEmotion.usecase";
+import { CreateMedicationUseCase } from "@app/use-cases/medication/CreateMedication.usecase";
 import { prisma } from "@infra/database/prisma/client";
 import { PrismaEmotionRepository } from "@infra/database/repositories/PrismaEmotionRepository";
+import { PrismaMedicationRepository } from "@infra/database/repositories/PrismaMedicationRepository";
 import { PrismaUserRepository } from "@infra/database/repositories/PrismaUserRepository";
 import { buildAuthMiddleware } from "@infra/http/middleware/authenticate.middleware";
 import { ArgonHashingService } from "@infra/services/ArgonHashingService";
@@ -16,6 +18,7 @@ const userRepository = new PrismaUserRepository(prisma);
 const hashingService = new ArgonHashingService();
 const jwtService = new JoseJwtService();
 const emotionRepository = new PrismaEmotionRepository(prisma);
+const medicationRepository = new PrismaMedicationRepository(prisma);
 
 // --- MIDDLEWARE ---
 export const authenticate = buildAuthMiddleware(jwtService);
@@ -48,4 +51,9 @@ export const deleteEmotionUseCase = new DeleteEmotionUseCase({
 
 export const restoreEmotionUseCase = new RestoreEmotionUseCase({
   emotionRepository,
+});
+
+export const createMedicationUseCase = new CreateMedicationUseCase({
+  medicationRepository,
+  userRepository,
 });
