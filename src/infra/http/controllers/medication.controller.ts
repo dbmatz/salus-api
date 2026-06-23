@@ -3,12 +3,17 @@ import { z } from "zod";
 import {
   authenticate,
   createMedicationUseCase,
+  deleteMedicationUseCase,
   listMedicationUseCase,
 } from "../../../container";
 
 const createMedicationBodySchema = z.object({
   name: z.string().min(3),
   dosage: z.string().optional(),
+});
+
+const deleteMedicationParamsSchema = z.object({
+  medicationId: z.uuid(),
 });
 
 export async function medicationController(app: FastifyInstance) {
@@ -36,4 +41,19 @@ export async function medicationController(app: FastifyInstance) {
       })),
     });
   });
+
+  app.delete(
+    "/:medicationId",
+    { preHandler: authenticate },
+    async (request, reply) => {
+      const { medicationId } = deleteMedicationParamsSchema.parse(
+        request.params,
+      );
+      await deleteMedicationUseCase.execute({
+        medicationId,
+        userId: request.userId,
+      });
+      return reply.status(204).send();
+    },
+  );
 }
