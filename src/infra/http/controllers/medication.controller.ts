@@ -5,6 +5,7 @@ import {
   createMedicationUseCase,
   deleteMedicationUseCase,
   listMedicationUseCase,
+  restoreMedicationUseCase,
 } from "../../../container";
 
 const createMedicationBodySchema = z.object({
@@ -13,6 +14,10 @@ const createMedicationBodySchema = z.object({
 });
 
 const deleteMedicationParamsSchema = z.object({
+  medicationId: z.uuid(),
+});
+
+const restoreMedicationParamsSchema = z.object({
   medicationId: z.uuid(),
 });
 
@@ -54,6 +59,21 @@ export async function medicationController(app: FastifyInstance) {
         userId: request.userId,
       });
       return reply.status(204).send();
+    },
+  );
+
+  app.patch(
+    "/:medicationId/restore",
+    { preHandler: authenticate },
+    async (request, reply) => {
+      const { medicationId } = restoreMedicationParamsSchema.parse(
+        request.params,
+      );
+      await restoreMedicationUseCase.execute({
+        medicationId,
+        userId: request.userId,
+      });
+      return reply.status(200).send();
     },
   );
 }
