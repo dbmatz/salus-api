@@ -19,6 +19,7 @@ export class EmotionMapper {
 
   static toPrismaCreate(emotion: Emotion) {
     return {
+      id: emotion.id,
       name: emotion.name,
       userId: emotion.userId,
     };

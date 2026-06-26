@@ -20,6 +20,7 @@ export class MedicationMapper {
 
   static toPrismaCreate(medication: Medication) {
     return {
+      id: medication.id,
       name: medication.name,
       userId: medication.userId,
       dosage: medication.dosage ?? null,
