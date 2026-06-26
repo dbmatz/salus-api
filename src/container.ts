@@ -9,6 +9,7 @@ import { DeleteMedicationUseCase } from "@app/use-cases/medication/DeleteMedicat
 import { ListMedicationUseCase } from "@app/use-cases/medication/ListMedication.usecase";
 import { RestoreMedicationUseCase } from "@app/use-cases/medication/RestoreMedication.usecase";
 import { CreateParameterUseCase } from "@app/use-cases/parameter/CreateParameter.usecase";
+import { ListParameterUseCase } from "@app/use-cases/parameter/ListParameter.usecase";
 import { prisma } from "@infra/database/prisma/client";
 import { PrismaEmotionRepository } from "@infra/database/repositories/PrismaEmotionRepository";
 import { PrismaMedicationRepository } from "@infra/database/repositories/PrismaMedicationRepository";
@@ -78,6 +79,11 @@ export const restoreMedicationUseCase = new RestoreMedicationUseCase({
 });
 
 export const createParameterUseCase = new CreateParameterUseCase({
+  parameterRepository,
+  userRepository,
+});
+
+export const listParameterUseCase = new ListParameterUseCase({
   parameterRepository,
   userRepository,
 });
