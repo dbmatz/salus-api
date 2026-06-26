@@ -5,6 +5,7 @@ import {
   createParameterUseCase,
   deleteParameterUseCase,
   listParameterUseCase,
+  restoreParameterUseCase,
 } from "../../../container";
 
 const createParameterBodySchema = z.object({
@@ -13,6 +14,10 @@ const createParameterBodySchema = z.object({
 });
 
 const deleteparameterParamsSchema = z.object({
+  parameterId: z.uuid(),
+});
+
+const restoreParameterParamsSchema = z.object({
   parameterId: z.uuid(),
 });
 
@@ -52,6 +57,21 @@ export async function parameterController(app: FastifyInstance) {
         userId: request.userId,
       });
       return reply.status(204).send();
+    },
+  );
+
+  app.patch(
+    "/:parameterId/restore",
+    { preHandler: authenticate },
+    async (request, reply) => {
+      const { parameterId } = restoreParameterParamsSchema.parse(
+        request.params,
+      );
+      await restoreParameterUseCase.execute({
+        parameterId,
+        userId: request.userId,
+      });
+      return reply.status(200).send();
     },
   );
 }
