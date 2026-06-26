@@ -8,9 +8,11 @@ import { CreateMedicationUseCase } from "@app/use-cases/medication/CreateMedicat
 import { DeleteMedicationUseCase } from "@app/use-cases/medication/DeleteMedication.usecase";
 import { ListMedicationUseCase } from "@app/use-cases/medication/ListMedication.usecase";
 import { RestoreMedicationUseCase } from "@app/use-cases/medication/RestoreMedication.usecase";
+import { CreateParameterUseCase } from "@app/use-cases/parameter/CreateParameter.usecase";
 import { prisma } from "@infra/database/prisma/client";
 import { PrismaEmotionRepository } from "@infra/database/repositories/PrismaEmotionRepository";
 import { PrismaMedicationRepository } from "@infra/database/repositories/PrismaMedicationRepository";
+import { PrismaParameterRepository } from "@infra/database/repositories/PrismaParameterRepository";
 import { PrismaUserRepository } from "@infra/database/repositories/PrismaUserRepository";
 import { buildAuthMiddleware } from "@infra/http/middleware/authenticate.middleware";
 import { ArgonHashingService } from "@infra/services/ArgonHashingService";
@@ -22,6 +24,7 @@ const hashingService = new ArgonHashingService();
 const jwtService = new JoseJwtService();
 const emotionRepository = new PrismaEmotionRepository(prisma);
 const medicationRepository = new PrismaMedicationRepository(prisma);
+const parameterRepository = new PrismaParameterRepository(prisma);
 
 // --- MIDDLEWARE ---
 export const authenticate = buildAuthMiddleware(jwtService);
@@ -72,4 +75,9 @@ export const deleteMedicationUseCase = new DeleteMedicationUseCase({
 
 export const restoreMedicationUseCase = new RestoreMedicationUseCase({
   medicationRepository,
+});
+
+export const createParameterUseCase = new CreateParameterUseCase({
+  parameterRepository,
+  userRepository,
 });
