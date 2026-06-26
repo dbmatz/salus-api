@@ -1,4 +1,5 @@
 import Fastify from "fastify";
+import cors from "@fastify/cors";
 import { env } from "./env";
 import { authController } from "@infra/http/controllers/auth.controller";
 import { registerErrorHandler } from "@infra/errors/errorHandler";
@@ -11,6 +12,8 @@ const app = Fastify({
 });
 
 registerErrorHandler(app);
+
+app.register(cors, { origin: true });
 
 app.register(authController, { prefix: "/auth" });
 app.register(emotionController, { prefix: "/emotions" });
