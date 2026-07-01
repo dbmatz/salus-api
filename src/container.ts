@@ -1,5 +1,6 @@
 import { LoginUseCase } from "@app/use-cases/auth/Login.usecase";
 import { RegisterUserUseCase } from "@app/use-cases/auth/RegisterUser.usecase";
+import { CreateDailyRecordUseCase } from "@app/use-cases/daily-record/CreateDailyRecord.usecase";
 import { CreateEmotionUseCase } from "@app/use-cases/emotion/CreateEmotion.usecase";
 import { DeleteEmotionUseCase } from "@app/use-cases/emotion/DeleteEmotion.usecase";
 import { ListEmotionUseCase } from "@app/use-cases/emotion/ListEmotion.usecase";
@@ -13,6 +14,7 @@ import { DeleteParameterUseCase } from "@app/use-cases/parameter/DeleteParameter
 import { ListParameterUseCase } from "@app/use-cases/parameter/ListParameter.usecase";
 import { RestoreParameterUseCase } from "@app/use-cases/parameter/RestoreParameter.usecase";
 import { prisma } from "@infra/database/prisma/client";
+import { PrismaDailyRecordRepository } from "@infra/database/repositories/PrismaDailyRecordRepository";
 import { PrismaEmotionRepository } from "@infra/database/repositories/PrismaEmotionRepository";
 import { PrismaMedicationRepository } from "@infra/database/repositories/PrismaMedicationRepository";
 import { PrismaParameterRepository } from "@infra/database/repositories/PrismaParameterRepository";
@@ -28,6 +30,7 @@ const jwtService = new JoseJwtService();
 const emotionRepository = new PrismaEmotionRepository(prisma);
 const medicationRepository = new PrismaMedicationRepository(prisma);
 const parameterRepository = new PrismaParameterRepository(prisma);
+const dailyRecordRepository = new PrismaDailyRecordRepository(prisma);
 
 // --- MIDDLEWARE ---
 export const authenticate = buildAuthMiddleware(jwtService);
@@ -96,4 +99,12 @@ export const deleteParameterUseCase = new DeleteParameterUseCase({
 
 export const restoreParameterUseCase = new RestoreParameterUseCase({
   parameterRepository,
+});
+
+export const createDailyRecordUseCase = new CreateDailyRecordUseCase({
+  dailyRecordRepository,
+  userRepository,
+  medicationRepository,
+  parameterRepository,
+  emotionRepository,
 });

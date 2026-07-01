@@ -6,6 +6,7 @@ import { registerErrorHandler } from "@infra/errors/errorHandler";
 import { emotionController } from "@infra/http/controllers/emotion.controller";
 import { medicationController } from "@infra/http/controllers/medication.controller";
 import { parameterController } from "@infra/http/controllers/parameter.controller";
+import { dailyRecordController } from "@infra/http/controllers/daily-record.controller";
 
 const app = Fastify({
   logger: env.NODE_ENV === "development",
@@ -19,6 +20,7 @@ app.register(authController, { prefix: "/auth" });
 app.register(emotionController, { prefix: "/emotions" });
 app.register(medicationController, { prefix: "/medications" });
 app.register(parameterController, { prefix: "/parameters" });
+app.register(dailyRecordController, { prefix: "/daily-records" });
 
 const start = async () => {
   try {
