@@ -36,7 +36,7 @@ export async function parameterController(app: FastifyInstance) {
       userId: request.userId,
     });
     return reply.status(200).send({
-      medications: result.map((e) => ({
+      parameters: result.map((e) => ({
         id: e.id,
         name: e.name,
         type: e.type.value,
