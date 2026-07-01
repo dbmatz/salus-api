@@ -17,8 +17,8 @@ app.register(cors, { origin: true });
 
 app.register(authController, { prefix: "/auth" });
 app.register(emotionController, { prefix: "/emotions" });
-app.register(medicationController, { prefix: "/medication" });
-app.register(parameterController, { prefix: "/parameter" });
+app.register(medicationController, { prefix: "/medications" });
+app.register(parameterController, { prefix: "/parameters" });
 
 const start = async () => {
   try {
