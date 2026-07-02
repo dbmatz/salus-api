@@ -1,6 +1,10 @@
 import { FastifyInstance } from "fastify";
 import { z } from "zod";
-import { authenticate, createDailyRecordUseCase } from "../../../container";
+import {
+  authenticate,
+  createDailyRecordUseCase,
+  listDailyRecordByMonthUseCase,
+} from "../../../container";
 
 const createDailyRecordBodySchema = z.object({
   emotionId: z.string().uuid(),
@@ -20,11 +24,32 @@ const createDailyRecordBodySchema = z.object({
     .array(
       z.object({
         parameterId: z.string().uuid(),
-        valuationBool: z.string().optional(),
+        valuationBool: z.boolean().optional(),
         valuationInt: z.number().optional(),
       }),
     )
     .optional(),
+});
+
+const listDailyRecordByMonth = z.object({
+  month: z.string().refine(
+    (month) => {
+      const monthNum = parseInt(month, 10);
+      return !isNaN(monthNum) && monthNum >= 1 && monthNum <= 12;
+    },
+    {
+      message: "Month must be a number between 1 and 12",
+    },
+  ),
+  year: z.string().refine(
+    (year) => {
+      const yearNum = parseInt(year, 10);
+      return !isNaN(yearNum);
+    },
+    {
+      message: "Year must be a number",
+    },
+  ),
 });
 
 export async function dailyRecordController(app: FastifyInstance) {
@@ -33,22 +58,35 @@ export async function dailyRecordController(app: FastifyInstance) {
     const { dayDescription, medicationLogs, parameterEvaluations, ...rest } =
       body;
     await createDailyRecordUseCase.execute({
-      ...rest,
-      userId: request.userId,
+      emotionId: body.emotionId,
       date: new Date(body.date),
-      ...(dayDescription !== undefined && { dayDescription }),
-      ...(medicationLogs !== undefined && { medicationLogs }),
-      ...(parameterEvaluations !== undefined && {
-        parameterEvaluations: parameterEvaluations.map((pe) => ({
-          ...pe,
-          valuationBool:
-            pe.valuationBool === undefined
-              ? undefined
-              : pe.valuationBool === "true",
-          valuationInt: pe.valuationInt ?? 0,
-        })),
-      }),
+      userId: request.userId,
+      dayDescription: body.dayDescription,
+      medicationLogs: body.medicationLogs,
+      parameterEvaluations: body.parameterEvaluations?.map((pe) => ({
+        parameterId: pe.parameterId,
+        valuationBool: pe.valuationBool,
+        valuationInt: pe.valuationInt,
+      })),
     });
     return reply.status(201).send();
+  });
+
+  app.get<{
+    Querystring: { month: string; year: string };
+  }>("/", { preHandler: authenticate }, async (request, reply) => {
+    const { month, year } = request.query;
+    const body = listDailyRecordByMonth.parse({ month, year });
+    const dailyRecords = await listDailyRecordByMonthUseCase.execute({
+      month: parseInt(body.month, 10),
+      year: parseInt(body.year, 10),
+      userId: request.userId,
+    });
+    return reply.status(200).send({
+      dailyRecords: dailyRecords.map((e) => ({
+        id: e.id,
+        date: new Date(e.date).toISOString().split("T")[0],
+      })),
+    });
   });
 }

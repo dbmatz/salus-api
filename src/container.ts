@@ -1,6 +1,7 @@
 import { LoginUseCase } from "@app/use-cases/auth/Login.usecase";
 import { RegisterUserUseCase } from "@app/use-cases/auth/RegisterUser.usecase";
 import { CreateDailyRecordUseCase } from "@app/use-cases/daily-record/CreateDailyRecord.usecase";
+import { ListDailyRecordByMonthUseCase } from "@app/use-cases/daily-record/ListDailyRecordByMonth.usecase";
 import { CreateEmotionUseCase } from "@app/use-cases/emotion/CreateEmotion.usecase";
 import { DeleteEmotionUseCase } from "@app/use-cases/emotion/DeleteEmotion.usecase";
 import { ListEmotionUseCase } from "@app/use-cases/emotion/ListEmotion.usecase";
@@ -107,4 +108,9 @@ export const createDailyRecordUseCase = new CreateDailyRecordUseCase({
   medicationRepository,
   parameterRepository,
   emotionRepository,
+});
+
+export const listDailyRecordByMonthUseCase = new ListDailyRecordByMonthUseCase({
+  userRepository,
+  dailyRecordRepository,
 });
