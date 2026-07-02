@@ -57,4 +57,25 @@ export class PrismaDailyRecordRepository implements IDailyRecordRepository {
 
     return DailyRecordMapper.toDomain(created);
   }
+
+  async listByUserAndMonth(
+    userId: string,
+    month: number,
+    year: number,
+  ): Promise<{ id: string; date: Date }[]> {
+    const firstDay = new Date(Date.UTC(year, month - 1, 1));
+    const lastDay = new Date(Date.UTC(year, month, 0, 23, 59, 59, 999));
+    const records = await this.prisma.dailyRecord.findMany({
+      where: {
+        userId,
+        date: { gte: firstDay, lte: lastDay },
+      },
+      select: {
+        id: true,
+        date: true,
+      },
+      orderBy: { date: "asc" },
+    });
+    return records;
+  }
 }

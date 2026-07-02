@@ -63,7 +63,7 @@ export class DailyRecordMapper {
     return {
       dayDescription: dailyRecord.dayDescription ?? null,
       emotionId: dailyRecord.emotionId,
-      updateAt: dailyRecord.updatedAt,
+      updatedAt: dailyRecord.updatedAt,
     };
   }
 }
