@@ -15,9 +15,9 @@ interface CreateDailyRecordInput {
   date: Date;
   userId: string;
   emotionId: string;
-  dayDescription?: string;
-  medicationLogs?: MedicationLog[];
-  parameterEvaluations?: ParameterEvaluation[];
+  dayDescription: string | undefined;
+  medicationLogs: MedicationLog[] | undefined;
+  parameterEvaluations: ParameterEvaluation[] | undefined;
 }
 
 interface CreateDailyRecordDeps {
