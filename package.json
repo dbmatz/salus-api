@@ -1,18 +1,47 @@
 {
-    "private": true,
-    "type": "module",
-    "scripts": {
-        "dev": "vite",
-        "build": "vite build"
-    },
-    "devDependencies": {
-        "@tailwindcss/forms": "^0.5.2",
-        "alpinejs": "^3.4.2",
-        "autoprefixer": "^10.4.2",
-        "axios": "^1.1.2",
-        "laravel-vite-plugin": "^0.8.0",
-        "postcss": "^8.4.6",
-        "tailwindcss": "^3.1.0",
-        "vite": "^4.0.0"
-    }
+  "name": "_salus",
+  "version": "1.0.0",
+  "main": "index.js",
+  "scripts": {
+    "prisma:generate": "prisma generate --schema=src/infra/database/prisma/schema.prisma",
+    "prisma:migrate": "prisma migrate dev --schema=src/infra/database/prisma/schema.prisma",
+    "prisma:migrate:prod": "prisma migrate deploy --schema=src/infra/database/prisma/schema.prisma",
+    "prisma:studio": "prisma studio --schema=src/infra/database/prisma/schema.prisma",
+    "start": "node dist/server.js",
+    "dev": "tsx watch --env-file=.env src/server.ts",
+    "test": "vitest",
+    "test:run": "vitest run",
+    "test:coverage": "vitest run --coverage",
+    "test:watch": "vitest watch"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/dbmatz/_salus.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/dbmatz/_salus/issues"
+  },
+  "homepage": "https://github.com/dbmatz/_salus#readme",
+  "description": "",
+  "devDependencies": {
+    "@types/node": "^25.9.1",
+    "@vitest/coverage-v8": "^4.1.8",
+    "prisma": "^6.19.3",
+    "tsx": "^4.22.3",
+    "typescript": "^6.0.3",
+    "vitest": "^4.1.8"
+  },
+  "dependencies": {
+    "@fastify/cors": "^11.2.0",
+    "@fastify/static": "^9.1.3",
+    "@prisma/client": "^6.19.3",
+    "@t3-oss/env-core": "^0.13.11",
+    "argon2": "^0.44.0",
+    "fastify": "^5.8.5",
+    "jose": "^6.2.3",
+    "zod": "^4.4.3"
+  }
 }
