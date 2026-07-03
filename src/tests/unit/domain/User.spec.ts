@@ -8,6 +8,7 @@ function makeValidUserProps() {
     name: "Ana Silva",
     email: Email.create("ana@email.com"),
     passwordHash: "hashed_password",
+    birthDate: new Date("1990-01-01"),
   };
 }
 
@@ -29,6 +30,14 @@ describe("User", () => {
     it("must throw DomainError when any name part is shorter than 2 characters", () => {
       expect(() =>
         User.create({ ...makeValidUserProps(), name: "E A" }),
+      ).toThrow(DomainError);
+    });
+    it("must throw DomainError when birthdate is in the future", () => {
+      expect(() =>
+        User.create({
+          ...makeValidUserProps(),
+          birthDate: new Date(Date.now() + 100000),
+        }),
       ).toThrow(DomainError);
     });
   });

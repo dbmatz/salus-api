@@ -7,6 +7,7 @@ interface UserProps {
   name: string;
   email: Email;
   passwordHash: string;
+  birthDate: Date;
   createdAt?: Date;
   updatedAt?: Date | undefined;
   deletedAt?: Date | undefined;
@@ -17,6 +18,7 @@ export class User {
   private _name: string;
   private _email: Email;
   private _passwordHash: string;
+  private _birthDate: Date;
   private readonly _createdAt: Date;
   private _updatedAt?: Date | undefined;
   private _deletedAt?: Date | undefined;
@@ -26,6 +28,7 @@ export class User {
     this._name = props.name;
     this._email = props.email;
     this._passwordHash = props.passwordHash;
+    this._birthDate = props.birthDate;
     this._createdAt = props.createdAt ?? new Date();
     this._updatedAt = props.updatedAt;
     this._deletedAt = props.deletedAt;
@@ -47,6 +50,10 @@ export class User {
         "Name and last name must be at least 2 characters each.",
       );
     }
+
+    if (props.birthDate.getTime() > new Date().getTime()) {
+      throw new DomainError("Birth date cannot be in the future.");
+    }
     return new User(props);
   }
 
@@ -54,6 +61,7 @@ export class User {
     id: string;
     name: string;
     email: Email;
+    birthDate: Date;
     passwordHash: string;
     createdAt: Date;
     updatedAt: Date | undefined;
@@ -71,6 +79,9 @@ export class User {
   }
   get email(): Email {
     return this._email;
+  }
+  get birthDate(): Date {
+    return this._birthDate;
   }
   get updatedAt(): Date | undefined {
     return this._updatedAt;

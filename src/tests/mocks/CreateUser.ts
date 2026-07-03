@@ -9,6 +9,7 @@ export async function createUser(repo: InMemoryUserRepository) {
     name: "John Doe",
     email: Email.create(`john${counter}@email.com`),
     passwordHash: "hashed:Senh@123",
+    birthDate: new Date("1990-01-01"),
   });
   await repo.create(user);
   return user;

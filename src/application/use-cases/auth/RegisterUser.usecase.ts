@@ -9,6 +9,7 @@ interface RegisterUserInput {
   name: string;
   email: string;
   password: string;
+  birthDate: Date;
 }
 
 interface RegisterUserDeps {
@@ -33,7 +34,7 @@ export class RegisterUserUseCase {
 
     const passwordHash = await this.deps.hashingService.hash(password.value);
 
-    const user = User.create({ name: input.name, email, passwordHash });
+    const user = User.create({ name: input.name, email, passwordHash, birthDate: input.birthDate });
     await this.deps.userRepository.create(user);
   }
 }
