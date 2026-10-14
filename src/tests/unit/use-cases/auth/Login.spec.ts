@@ -35,6 +35,7 @@ describe("LoginUseCase", () => {
         name: "John Doe",
         email: "john@email.com",
         password: "Senh@123",
+        birthDate: new Date("1990-01-01"),
       });
       const result = await loginSut.execute({
         email: "john@email.com",
@@ -50,6 +51,7 @@ describe("LoginUseCase", () => {
         name: "John Doe",
         email: "john@email.com",
         password: "Senh@123",
+        birthDate: new Date("1990-01-01"),
       });
 
       const result = await loginSut.execute({
@@ -65,6 +67,7 @@ describe("LoginUseCase", () => {
         name: "John Doe",
         email: "john@email.com",
         password: "Senh@123",
+        birthDate: new Date("1990-01-01"),
       });
 
       await expect(

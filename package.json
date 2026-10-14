@@ -9,6 +9,7 @@
     "prisma:studio": "prisma studio --schema=src/infra/database/prisma/schema.prisma",
     "start": "node dist/server.js",
     "dev": "tsx watch --env-file=.env src/server.ts",
+    "typecheck": "tsc --noEmit",
     "test": "vitest",
     "test:run": "vitest run",
     "test:coverage": "vitest run --coverage",

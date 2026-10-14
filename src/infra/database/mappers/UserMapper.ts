@@ -13,6 +13,7 @@ export class UserMapper {
       name: row.name,
       email: Email.create(row.email),
       passwordHash: row.passwordHash,
+      birthDate: row.birthDate,
       createdAt: row.createdAt,
       updatedAt: row.updatedAt ?? undefined,
       deletedAt: row.deletedAt ?? undefined,
@@ -25,6 +26,7 @@ export class UserMapper {
       name: user.name,
       email: user.email.value,
       passwordHash: user.passwordHash,
+      birthDate: user.birthDate,
     };
   }
 
@@ -32,6 +34,7 @@ export class UserMapper {
     return {
       name: user.name,
       email: user.email.value,
+      birthDate: user.birthDate,
       updatedAt: user.updatedAt,
       deletedAt: user.deletedAt ?? null,
     };

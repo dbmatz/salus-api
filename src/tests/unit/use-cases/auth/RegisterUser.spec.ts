@@ -24,6 +24,7 @@ describe("RegisterUserUseCase", () => {
         name: "John Doe",
         email: "john@email.com",
         password: "Senh@123",
+        birthDate: new Date("1990-01-01"),
       });
       expect(result).toBe(undefined);
     });
@@ -33,6 +34,7 @@ describe("RegisterUserUseCase", () => {
         name: "John Doe",
         email: "john@email.com",
         password: "Senh@123",
+        birthDate: new Date("1990-01-01"),
       });
       const user = await userRepository.findByEmail("john@email.com");
       expect(user).toBeDefined();
@@ -43,6 +45,7 @@ describe("RegisterUserUseCase", () => {
         name: "John Doe",
         email: "john@email.com",
         password: "Senh@123",
+        birthDate: new Date("1990-01-01"),
       });
       const user = await userRepository.findByEmail("john@email.com");
       expect(user).toBeDefined();
@@ -55,12 +58,14 @@ describe("RegisterUserUseCase", () => {
           name: "John Doe",
           email: "john@email.com",
           password: "Senh@123",
+          birthDate: new Date("1990-01-01"),
         });
 
         await sut.execute({
           name: "John Doe",
           email: "john@email.com",
           password: "Senh@123",
+          birthDate: new Date("1990-01-01"),
         });
       }).rejects.toThrow(ConflictError);
     });

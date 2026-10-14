@@ -30,7 +30,9 @@ export function registerErrorHandler(app: FastifyInstance): void {
     }
 
     if (error instanceof DomainError) {
-      return reply.status(400).send({ message: error.message });
+      return reply
+        .status(400)
+        .send({ message: error.message, code: error.code });
     }
 
     app.log.error(error);
